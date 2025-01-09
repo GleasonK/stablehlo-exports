@@ -3,7 +3,7 @@
 set -ex
 
 setup_searchless_chess() {
-  cd seachless_chess
+  cd searchless_chess/searchless_chess
   pip install -r requirements.txt
   export PYTHONPATH=$(pwd)/..
   
@@ -21,7 +21,7 @@ setup_searchless_chess() {
   cd ../checkpoints
   ./download.sh
 
-  cd ..
+  cd ../..
 }
 
 setup_searchless_chess
