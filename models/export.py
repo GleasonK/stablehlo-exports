@@ -1,9 +1,9 @@
 from absl import app
 from absl import flags
 from collections.abc import Sequence
+from enum import Enum
 import os
 
-import model
 
 import jax
 import jax.export
@@ -13,14 +13,16 @@ from jax._src.lib.mlir.dialects import hlo as stablehlo
 from jax._src.lib import xla_client
 
 from gdm_searchless_chess import loader as slc_loader
+from jax_resnet import loader as jrn_loader
 
-from enum import Enum
+from exportable_model import ExportableModel
 
 class Models(Enum):
   ALL = "all"
   SEARCHLESS_CHESS_9M = "searchless_chess_9m"
   SEARCHLESS_CHESS_136M = "searchless_chess_136m"
   SEARCHLESS_CHESS_270M = "searchless_chess_270m"
+  JAX_RESNET_50 = "jax_resnet_50"
 
 flags.DEFINE_list(
     name = "models", 
@@ -42,6 +44,9 @@ def load_model(model):
     return slc_loader.load("136M")
   if model == Models.SEARCHLESS_CHESS_270M:
     return slc_loader.load("270M")
+  if model == Models.JAX_RESNET_50:
+    return jrn_loader.load()
+
   raise ValueError(f"Unknown model {model}")
 
 ###
@@ -74,9 +79,9 @@ def write_export(model, stablehlo):
   write_readable(filename, stablehlo)
   write_bytecode(filename+".bc", stablehlo)
 
-def export_stablehlo(model : Models):
+def export_stablehlo(model : ExportableModel):
   print("Exporting model:", model.name)
-  exported = jax.export.export(model.main)(*model.inputs)
+  exported = jax.export.export(model.main)(*model.inputs, **model.kwargs)
   write_export(model, exported.mlir_module())
 
 def export_models(models):

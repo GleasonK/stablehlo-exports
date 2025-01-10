@@ -25,7 +25,7 @@ from searchless_chess.src import utils
 from searchless_chess.src.engines import engine as engine_lib
 from searchless_chess.src.engines import neural_engines
 
-import model
+from exportable_model import ExportableModel
 
 def _build_neural_engine_predictor(
     model_name: str,
@@ -159,8 +159,9 @@ def load(agent):
     return jitted_predict_fn(params=params, targets=sequences, rng=None)
 
   inputs = (params, sample_sequence())
-  return model.Model(
+  return ExportableModel(
     name=f"searchless_chess_{agent.lower()}",
     main=predict_sequence,
-    inputs=inputs
+    inputs=inputs,
+    kwargs={}
   )

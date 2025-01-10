@@ -1,2 +1,3 @@
-jax
--r models/searchless_chess/searchless_chess/requirements.txt
+jax==0.4.35
+-r models/gdm_searchless_chess/searchless_chess/requirements.txt
+-r models/jax_resnet/requirements.txt
