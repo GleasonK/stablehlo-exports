@@ -25,7 +25,7 @@ from searchless_chess.src import utils
 from searchless_chess.src.engines import engine as engine_lib
 from searchless_chess.src.engines import neural_engines
 
-from exportable_model import ExportableModel
+from exportable_model import ExportableModel, SourceFramework
 
 def _build_neural_engine_predictor(
     model_name: str,
@@ -160,8 +160,9 @@ def load(agent):
 
   inputs = (params, sample_sequence())
   return ExportableModel(
+    source_framework=SourceFramework.JAX,
     name=f"searchless_chess_{agent.lower()}",
     main=predict_sequence,
     inputs=inputs,
-    kwargs={}
+    kwargs={},
   )

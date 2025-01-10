@@ -1,3 +1,4 @@
 jax==0.4.35
+torch-xla2
 -r models/gdm_searchless_chess/searchless_chess/requirements.txt
 -r models/jax_resnet/requirements.txt

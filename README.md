@@ -30,7 +30,7 @@ source venv/bin/activate
 To export all models use the `all` flag, this is the default so it can be omit.
 
 ```sh
-export PYTHONPATH=$(pwd)/models/gdm_searchless_chess
+export PYTHONPATH="$(pwd)/models:$(pwd)/models/gdm_searchless_chess"
 python models/export.py --models=all
 ```
 
