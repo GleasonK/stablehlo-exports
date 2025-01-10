@@ -9,8 +9,6 @@ setup_searchless_chess() {
   
   # Download data (test only, not train)
   cd data
-  wget https://storage.googleapis.com/searchless_chess/data/eco_openings.pgn
-  wget https://storage.googleapis.com/searchless_chess/data/puzzles.csv
   mkdir -p test
   cd test
   wget https://storage.googleapis.com/searchless_chess/data/test/action_value_data.bag
