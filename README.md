@@ -1,12 +1,16 @@
-# StableHLO Exports
+# StableHLO Model Exports
 
-_Exports of popular models in StableHLO._
+_Exports of popular models in [StableHLO](https://openxla.org/stablehlo)._
 
-## View Existing Dumps
+## Available Exports
 
-Dumps with large literals (weights) elided are available in the `dumps/` folder.
-StableHLO bytecode files with the weights included will be uploaded somewhere
-with large file support shortly.
+Exports with large literals (weights) elided are available in the
+[`exports/`](exports) folder.
+
+**Currently this includes:**
+- [AlphaFold](https://github.com/google-deepmind/alphafold)
+- [Searchless Chess](https://github.com/google-deepmind/searchless_chess)
+- _More to come_
 
 ## Building and Exporting
 
@@ -27,11 +31,11 @@ To export all models use the `all` flag, this is the default so it can be omit.
 
 ```sh
 export PYTHONPATH=$(pwd)/models/gdm_searchless_chess
-python models/dump.py --models=all
+python models/export.py --models=all
 ```
 
 A list of models can be specified using the `models` flag if needed:
 
 ```py
-python models/dump.py --models=searchless_chess_9m
+python models/export.py --models=searchless_chess_9m
 ```

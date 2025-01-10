@@ -65,28 +65,28 @@ def write_readable(filename, stablehlo):
   with open(filename, 'w') as f:
     f.write(stablehlo_pretty)
 
-def write_dump(model, stablehlo):
-  """Write output to <repo_root>/dumps"""
+def write_export(model, stablehlo):
+  """Write output to <repo_root>/exports"""
   current_file_path = os.path.abspath(__file__)
   models_dir = os.path.dirname(current_file_path)
-  dumps_dir = os.path.join(models_dir, "..", "dumps")
-  filename = os.path.join(dumps_dir, f"{model.name}.mlir")
+  exports_dir = os.path.join(models_dir, "..", "exports")
+  filename = os.path.join(exports_dir, f"{model.name}.mlir")
   write_readable(filename, stablehlo)
   write_bytecode(filename+".bc", stablehlo)
 
-def dump_stablehlo(model : Models):
-  print("Dumping model:", model.name)
+def export_stablehlo(model : Models):
+  print("Exporting model:", model.name)
   exported = jax.export.export(model.main)(*model.inputs)
-  write_dump(model, exported.mlir_module())
+  write_export(model, exported.mlir_module())
 
-def dump_models(models):
+def export_models(models):
   for model in models:
     model = Models(model)
     loaded = load_model(model)
-    dump_stablehlo(loaded)
+    export_stablehlo(loaded)
 
 ###
-# Main dump function
+# Main export function
 
 def main(argv: Sequence[str]) -> None:
   if len(argv) > 1:
@@ -97,7 +97,7 @@ def main(argv: Sequence[str]) -> None:
   if 'all' in models:
     models = [model for model in Models if model.value != 'all']
 
-  dump_models(models)
+  export_models(models)
 
 
 if __name__ == '__main__':
