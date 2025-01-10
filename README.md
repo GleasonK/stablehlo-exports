@@ -8,8 +8,10 @@ Exports with large literals (weights) elided are available in the
 [`exports/`](exports) folder.
 
 **Currently this includes:**
-- [AlphaFold](https://github.com/google-deepmind/alphafold)
-- [Searchless Chess](https://github.com/google-deepmind/searchless_chess)
+- [GDM AlphaFold](https://github.com/google-deepmind/alphafold)
+- [GDM Searchless Chess](https://github.com/google-deepmind/searchless_chess)
+- [FlaxResNet50](https://huggingface.co/docs/transformers/en/model_doc/resnet#transformers.FlaxResNetModel)
+- [hf_BERT](https://huggingface.co/docs/transformers/en/model_doc/bert#transformers.BertModel)
 - _More to come_
 
 ## Building and Exporting
