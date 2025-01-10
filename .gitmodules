@@ -4,3 +4,6 @@
 [submodule "models/gdm_searchless_chess/searchless_chess"]
 	path = models/gdm_searchless_chess/searchless_chess
 	url = https://github.com/google-deepmind/searchless_chess.git
+[submodule "models/gdm_alphafold/alphafold"]
+	path = models/gdm_alphafold/alphafold
+	url = https://github.com/google-deepmind/alphafold.git

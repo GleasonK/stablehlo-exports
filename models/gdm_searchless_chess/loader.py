@@ -140,10 +140,10 @@ def load_sample_board():
   board = game.end().board()
   return board
 
-def sample_input():
+def sample_sequence():
   board = load_sample_board()
   sequences = get_analysis_sequences(board)
-  return (sequences,)
+  return sequences
 
 def load(agent):
   if not agent in PREDICTOR_BUILDERS:
@@ -152,11 +152,13 @@ def load(agent):
   predictor, params, return_buckets_values = PREDICTOR_BUILDERS[agent]()
   jitted_predict_fn = jax.jit(predictor.predict)
 
+  ## Note: Weights can be closed over to capture in the StableHLO output
+  #  if desired, just remove the `params` argument and update the sample inputs
   @jax.jit
-  def predict_sequence(sequences):
+  def predict_sequence(params, sequences):
     return jitted_predict_fn(params=params, targets=sequences, rng=None)
 
-  inputs = sample_input()
+  inputs = (params, sample_sequence())
   return model.Model(
     name=f"searchless_chess_{agent.lower()}",
     main=predict_sequence,

@@ -18,7 +18,7 @@ but py3.10 is likely to work as well.
 ```sh
 python3 -m venv venv
 source venv/bin/activate
-./setup.sh
+(cd models/ && ./setup.sh)
 ```
 
 ### Export Models
@@ -26,11 +26,12 @@ source venv/bin/activate
 To export all models use the `all` flag, this is the default so it can be omit.
 
 ```sh
-python dump.py --models=all
+export PYTHONPATH=$(pwd)/models/gdm_searchless_chess
+python models/dump.py --models=all
 ```
 
 A list of models can be specified using the `models` flag if needed:
 
 ```py
-python dump.py --models=searchless_chess_9m
+python models/dump.py --models=searchless_chess_9m
 ```

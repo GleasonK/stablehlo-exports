@@ -2,10 +2,12 @@
 
 set -ex
 
+SETUP_DIR=$(dirname "$0")
+cd $SETUP_DIR
+
 setup_searchless_chess() {
   cd gdm_searchless_chess/searchless_chess
   pip install -r requirements.txt
-  export PYTHONPATH=$(pwd)/..
   
   # Download data (test only, not train)
   cd data
