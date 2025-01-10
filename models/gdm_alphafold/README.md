@@ -27,16 +27,35 @@ We can aim to export these functions by creating a function with mimics
 3. Add the following code block to the end to export:
 
 ```python
-import jax
-import jax.export
-
+# Export without params embedded to keep dump small
 @jax.jit
-def alphafold_predict(feat, random_seed):
-  model_runner.init_params(feat)
-  return model_runner.apply(model_runner.params, random_seed, feat)
+def alphafold_predict(params, random_seed, feat):
+  return model_runner.apply(params, random_seed, feat)
 
+feat = processed_feature_dict
+model_runner.init_params(feat)
+params = model_runner.params
 random_seed = jax.random.PRNGKey(random.randrange(sys.maxsize))
-jax.export.export(alphafold_predict)(processed_feature_dict, random_seed)
+
+exported = jax.export.export(alphafold_predict)(params, random_seed, feat)
+with open('/tmp/alphafold.mlir', 'w') as f:
+  f.write(exported.mlir_module())
+```
+
+### Uploading the resulting MLIR
+
+The file can be located and downloaded in the Colab file browser.
+
+Some post processing is done to the uploaded dump to keep it concise and
+readable:
+
+```bash
+# Create a stablehlo bytecode variant for upload
+stablehlo-translate --serialize --target=1.0.0 alphafold.mlir -o alphafold.mlir.bc
+
+# Remove large constants from textual format to keep it readable and uploadable
+stablehlo-opt --mlir-elide-elementsattrs-if-larger=20 alphafold.mlir -o /tmp/alphafold.mlir
+mv /tmp/alphafold.mlir .
 ```
 
 ### Minor Optimization to Export
