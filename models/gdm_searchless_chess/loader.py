@@ -81,9 +81,8 @@ def _build_neural_engine_predictor(
   )
 
   predictor = transformer.build_transformer_predictor(config=predictor_config)
-  checkpoint_dir = os.path.join(
-      os.getcwd(),
-      f'../checkpoints/{model_name}',
+  checkpoint_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+    "searchless_chess", "checkpoints", model_name
   )
   params = training_utils.load_parameters(
       checkpoint_dir=checkpoint_dir,
@@ -150,10 +149,7 @@ def load(agent):
   if not agent in PREDICTOR_BUILDERS:
     raise InputError(f"Invalid searchless chess agent: {agent}")
 
-  original_directory = os.getcwd()
-  os.chdir("./searchless_chess/src/")
   predictor, params, return_buckets_values = PREDICTOR_BUILDERS[agent]()
-  os.chdir(original_directory)
   jitted_predict_fn = jax.jit(predictor.predict)
 
   @jax.jit

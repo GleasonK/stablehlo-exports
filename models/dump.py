@@ -12,7 +12,7 @@ from jax._src.lib.mlir import ir
 from jax._src.lib.mlir.dialects import hlo as stablehlo
 from jax._src.lib import xla_client
 
-import searchless_chess_loader
+from gdm_searchless_chess import loader as slc_loader
 
 from enum import Enum
 
@@ -37,11 +37,11 @@ FLAGS = flags.FLAGS
 def load_model(model):
   print("Loading model:", model)
   if model == Models.SEARCHLESS_CHESS_9M:
-    return searchless_chess_loader.load("9M")
+    return slc_loader.load("9M")
   if model == Models.SEARCHLESS_CHESS_136M:
-    return searchless_chess_loader.load("136M")
+    return slc_loader.load("136M")
   if model == Models.SEARCHLESS_CHESS_270M:
-    return searchless_chess_loader.load("270M")
+    return slc_loader.load("270M")
   raise ValueError(f"Unknown model {model}")
 
 ###
@@ -74,13 +74,14 @@ def write_dump(model, stablehlo):
   write_readable(filename, stablehlo)
   write_bytecode(filename+".bc", stablehlo)
 
-def dump_stablehlo(model : model.Model):
+def dump_stablehlo(model : Models):
   print("Dumping model:", model.name)
   exported = jax.export.export(model.main)(*model.inputs)
   write_dump(model, exported.mlir_module())
 
 def dump_models(models):
   for model in models:
+    model = Models(model)
     loaded = load_model(model)
     dump_stablehlo(loaded)
 
